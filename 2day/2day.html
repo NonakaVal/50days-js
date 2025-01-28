@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <!-- Metadados do HTML, incluindo a codificação e responsividade -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistente de Cozinha</title>
+    <style>
+        /* Estilos gerais para a página */
+        
+        body {
+            font-family: Arial, sans-serif;
+            /* Definindo a fonte da página */
+            margin: 20px;
+            /* Margem para dar um espaçamento */
+            background-color: #a9e4f7;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            /* Alinhamento do título no centro */
+        }
+
+        .recipe-container {
+            margin-top: 20px;
+            /* Espaçamento superior */
+        }
+
+        .recipe {
+            border: 1px solid #ccc;
+            /* Borda ao redor de cada receita */
+            padding: 10px;
+            /* Espaçamento interno */
+            margin-bottom: 10px;
+            /* Espaçamento inferior */
+            background-color: #fff;
+            /* Cor de fundo para cada receita */
+        }
+
+        .ingredients-list {
+            list-style-type: none;
+            /* Remove os marcadores da lista */
+            padding: 0;
+            /* Remove o padding da lista */
+        }
+
+        .ingredients-list li {
+            padding: 5px 0;
+            /* Espaçamento vertical entre os itens da lista */
+        }
+
+        input,
+        button {
+            padding: 10px;
+            /* Tamanho do padding nos campos de input e nos botões */
+            font-size: 1em;
+            /* Tamanho da fonte dos inputs e botões */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Assistente de Cozinha</h1>
+    <h2>Cadastro de Receita</h2>
+
+    <!-- Formulário para cadastrar receitas -->
+    <div>
+        <!-- Input para nome da receita -->
+        <label for="recipeName">Nome da Receita:</label>
+        <input type="text" id="recipeName" placeholder="Digite o nome da receita"><br><br>
+
+        <!-- Input para nome do ingrediente -->
+        <label for="ingredient">Ingrediente:</label>
+        <input type="text" id="ingredient" placeholder="Ingrediente"><br><br>
+
+        <!-- Input para quantidade do ingrediente (para 1 porção) -->
+        <label for="quantity">Quantidade (para 1 porção):</label>
+        <input type="text" id="quantity" placeholder="Quantidade do ingrediente"><br><br>
+
+        <!-- Botões para adicionar ingredientes e salvar a receita -->
+        <button onclick="addIngredient()">Adicionar Ingrediente</button>
+        <button onclick="saveRecipe()">Salvar Receita</button>
+    </div>
+
+    <!-- Container para exibir as receitas cadastradas -->
+    <div class="recipe-container" id="recipeContainer"></div>
+
+    <script>
+        // Array para armazenar as receitas cadastradas
+        let recipes = [];
+
+        // Array para armazenar os ingredientes da receita atual
+        let currentIngredients = [];
+
+        // Função para adicionar um ingrediente à lista da receita atual
+        function addIngredient() {
+            const ingredient = document.getElementById("ingredient").value;  // Obtém o valor do input de ingrediente
+            const quantity = document.getElementById("quantity").value;  // Obtém o valor do input de quantidade
+
+            if (ingredient && quantity) {
+                currentIngredients.push({ ingredient, quantity }); // Adiciona o ingrediente e a quantidade ao array
+                alert(`Ingrediente ${ingredient} adicionado!`);  // Alerta informando que o ingrediente foi adicionado
+                document.getElementById("ingredient").value = ''; // Limpa o campo de ingrediente
+                document.getElementById("quantity").value = ''; // Limpa o campo de quantidade
+            } else {
+                alert("Por favor, insira o nome do ingrediente e a quantidade."); // Alerta caso algum campo esteja vazio
+            }
+        }
+
+        // Função para salvar a receita no array de receitas
+        function saveRecipe() {
+            const recipeName = document.getElementById("recipeName").value;  // Obtém o nome da receita
+
+            if (recipeName && currentIngredients.length > 0) {
+                // Verifica se o nome da receita e os ingredientes foram preenchidos
+                recipes.push({ name: recipeName, ingredients: currentIngredients });  // Adiciona a receita ao array de receitas
+                currentIngredients = [];  // Limpa os ingredientes após salvar a receita
+                document.getElementById("recipeName").value = '';  // Limpa o campo do nome da receita
+                displayRecipes();  // Atualiza a exibição das receitas cadastradas
+            } else {
+                alert("Por favor, insira o nome da receita e adicione ao menos um ingrediente.");  // Alerta se faltou preencher algum campo
+            }
+        }
+
+        // Função para exibir todas as receitas cadastradas
+        function displayRecipes() {
+            const recipeContainer = document.getElementById("recipeContainer");  // Obtém o elemento onde as receitas serão exibidas
+            recipeContainer.innerHTML = '';  // Limpa a lista de receitas antes de adicionar novas
+
+            recipes.forEach((recipe, index) => {
+                const recipeDiv = document.createElement('div');  // Cria um novo div para cada receita
+                recipeDiv.classList.add('recipe');  // Adiciona uma classe CSS para estilizar a receita
+                recipeDiv.innerHTML = `<h3>${recipe.name}</h3><ul class="ingredients-list">`;
+
+                // Exibe os ingredientes da receita
+                recipe.ingredients.forEach(ingredient => {
+                    recipeDiv.innerHTML += `<li>${ingredient.ingredient}: ${ingredient.quantity}</li>`;
+                });
+
+                // Adiciona um botão para ajustar as porções da receita
+                recipeDiv.innerHTML += `</ul><button onclick="adjustPortions(${index})">Ajustar Porções</button>`;
+                recipeContainer.appendChild(recipeDiv);  // Adiciona a receita ao contêiner de receitas
+            });
+        }
+
+        // Função para ajustar a quantidade de ingredientes conforme as porções
+        function adjustPortions(recipeIndex) {
+            const newPortions = prompt("Quantas porções você deseja preparar?");  // Solicita ao usuário o número de porções
+
+            if (newPortions && !isNaN(newPortions) && newPortions > 0) {
+                const adjustedRecipe = recipes[recipeIndex];  // Obtém a receita com base no índice
+                let adjustedIngredients = adjustedRecipe.ingredients.map(ingredient => {
+                    // Ajusta a quantidade de cada ingrediente conforme as novas porções
+                    const adjustedQuantity = (parseFloat(ingredient.quantity) * newPortions).toFixed(2);  // Calcula a quantidade ajustada
+                    return { ...ingredient, quantity: adjustedQuantity };  // Retorna o ingrediente com a quantidade ajustada
+                });
+                adjustedRecipe.ingredients = adjustedIngredients;  // Atualiza os ingredientes da receita
+
+                displayRecipes();  // Atualiza a exibição das receitas
+            } else {
+                alert("Por favor, insira um número válido para as porções.");  // Alerta se o valor inserido não for válido
+            }
+        }
+    </script>
+</body>
+
+</html>
