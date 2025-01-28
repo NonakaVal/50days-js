@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <!-- Metadados do HTML, incluindo a codificação e responsividade -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo de Adivinhação</title>
+  <style>
+    /* Estilos para a página */
+    body {
+      font-family: Arial, sans-serif; /* Definindo a fonte da página */
+      background-color: #f4f4f9; /* Cor de fundo da página */
+      text-align: center; /* Alinhamento do texto no centro */
+      padding: 20px; /* Espaçamento interno */
+    }
+    input, button {
+      padding: 10px; /* Espaçamento dentro dos campos de input e botão */
+      font-size: 1em; /* Tamanho da fonte */
+    }
+    .output {
+      background-color: #fff; /* Cor de fundo da área de resultados */
+      border: 1px solid #ccc; /* Borda ao redor da área de resultados */
+      padding: 15px; /* Espaçamento interno da área de resultados */
+      margin-top: 20px; /* Espaçamento superior da área de resultados */
+    }
+  </style>
+</head>
+<body>
+  <h1>Jogo de Adivinhação de Números</h1>
+  <p>Digite um número entre 1 e 100 e tente adivinhar o número secreto!</p>
+
+  <!-- Campo para o jogador inserir seu palpite -->
+  <input type="number" id="guess" placeholder="Digite seu palpite">
+  <button onclick="checkGuess()">Verificar Palpite</button> <!-- Botão que chama a função de verificação -->
+
+  <div class="output" id="output"> <!-- Div que exibirá os resultados -->
+    <p id="message"></p> <!-- Mensagem que aparece para o jogador -->
+    <p id="attempts"></p> <!-- Exibe o número de tentativas -->
+  </div>
+
+  <script>
+    // 1. Gerar um número aleatório entre 1 e 100
+    let secretNumber = Math.floor(Math.random() * 100) + 1; // Math.random() gera um número entre 0 e 1, multiplicado por 100 e arredondado para baixo com Math.floor()
+    let attempts = 0; // Inicializa o número de tentativas como 0
+
+    // 2. Função para verificar o palpite do jogador
+    function checkGuess() {
+      let guess = parseInt(document.getElementById('guess').value); // Obtém o valor inserido pelo jogador e converte para inteiro
+      attempts++; // Incrementa o número de tentativas
+
+      // 3. Verificar se o palpite está correto ou não
+      if (guess === secretNumber) { // Se o palpite for igual ao número secreto
+        document.getElementById('message').textContent = `Parabéns! Você acertou o número ${secretNumber}!`; // Mensagem de sucesso
+        document.getElementById('attempts').textContent = `Você acertou em ${attempts} tentativas.`; // Exibe o número de tentativas
+        document.getElementById('output').style.backgroundColor = "#8fbc8f"; // Altera a cor de fundo da área de resultados para verde (sucesso)
+      } else if (guess < secretNumber) { // Se o palpite for menor que o número secreto
+        document.getElementById('message').textContent = "O número secreto é maior!"; // Dica de que o número secreto é maior
+      } else { // Se o palpite for maior que o número secreto
+        document.getElementById('message').textContent = "O número secreto é menor!"; // Dica de que o número secreto é menor
+      }
+
+      // 4. Limpar o campo de palpite após cada tentativa
+      document.getElementById('guess').value = ''; // Limpa o campo de input
+    }
+  </script>
+</body>
+</html>

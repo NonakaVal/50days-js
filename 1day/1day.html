@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <!-- Metadados para definir a codificação de caracteres e a responsividade da página -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dia 1 - Fundamentos de JavaScript</title>
+  <style>
+    /* Estilo básico para a página */
+    body {
+      font-family: Arial, sans-serif; /* Fonte do texto */
+      margin: 0;
+      padding: 20px; /* Espaçamento interno */
+      background-color: #f4f4f9; /* Cor de fundo da página */
+    }
+
+    h1 {
+      color: #333; /* Cor do título */
+    }
+
+    .output {
+      background-color: #fff; /* Cor de fundo da área de resultados */
+      border: 1px solid #ccc; /* Borda ao redor da área de resultados */
+      padding: 15px; /* Espaçamento interno da área de resultados */
+      margin-top: 20px; /* Espaçamento superior */
+    }
+
+    pre {
+      font-size: 1.2em; /* Tamanho da fonte para resultados */
+      color: #333; /* Cor do texto dos resultados */
+    }
+  </style>
+</head>
+<body>
+  <h1>Fundamentos de JavaScript - Dia 1</h1>
+  
+  <!-- Div que exibirá os resultados na página -->
+  <div class="output" id="output">
+    <h2>Resultados:</h2>
+    <pre id="result"></pre> <!-- Área onde os resultados serão exibidos -->
+  </div>
+
+  <script>
+    // 1. Variáveis e Tipos de Dados
+    let nome = "Bruna";  // String: nome da pessoa
+    const idade = 25;   // Number: idade da pessoa, constante (não pode ser alterada)
+    let isAtivo = true; // Boolean: indica se a pessoa está ativa (sim/não)
+    let notaFinal = 8.5; // Number (Decimal): nota final do aluno
+
+    // 2. Operadores
+    let soma = 10 + 5; // Operador de soma
+    let subtracao = 10 - 3; // Operador de subtração
+    let multiplicacao = 4 * 3; // Operador de multiplicação
+    let divisao = 10 / 2; // Operador de divisão
+    let restoDivisao = 10 % 3; // Operador módulo (resto da divisão)
+
+    // 3. Controle de Fluxo
+    // Exemplo com `if` e `else`
+    let resultadoIfElse = (idade >= 18) ? nome + " é maior de idade." : nome + " é menor de idade."; // Usando operador ternário
+
+    // Exemplo com `switch`
+    let resultadoSwitch;
+    switch (notaFinal) {
+      case 10:
+        resultadoSwitch = "Nota excelente!"; // Caso a nota seja 10
+        break;
+      case 8:
+        resultadoSwitch = "Boa nota!"; // Caso a nota seja 8
+        break;
+      case 5:
+        resultadoSwitch = "Precisa melhorar."; // Caso a nota seja 5
+        break;
+      default:
+        resultadoSwitch = "Nota desconhecida."; // Caso a nota não se encaixe em nenhum dos anteriores
+    }
+
+    // 4. Laço de Repetição (`for`)
+    let loopFor = ""; // Variável para armazenar os resultados do laço `for`
+    for (let i = 1; i <= 5; i++) { // Laço for que conta de 1 a 5
+      loopFor += "Contagem: " + i + "\n"; // Concatenando a contagem em uma string
+    }
+
+    // 5. Laço de Repetição (`while`)
+    let loopWhile = ""; // Variável para armazenar os resultados do laço `while`
+    let contador = 1; // Contador inicializado com 1
+    while (contador <= 5) { // Laço while que conta enquanto o contador for menor ou igual a 5
+      loopWhile += "Contagem: " + contador + "\n"; // Concatenando a contagem em uma string
+      contador++; // Incrementando o contador
+    }
+
+    // 6. Laço de Repetição (`do...while`)
+    let loopDoWhile = ""; // Variável para armazenar os resultados do laço `do...while`
+    let contador2 = 1; // Contador inicializado com 1
+    do {
+      loopDoWhile += "Contagem: " + contador2 + "\n"; // Concatenando a contagem em uma string
+      contador2++; // Incrementando o contador
+    } while (contador2 <= 5); // O laço vai continuar enquanto contador2 for menor ou igual a 5
+
+    // Exibindo os resultados na página
+    const resultElement = document.getElementById('result'); // Selecionando o elemento onde os resultados serão exibidos
+    resultElement.textContent = `
+      Resultado do if/else: ${resultadoIfElse}
+      \n
+      Resultado do switch: ${resultadoSwitch}
+      \n
+      Resultado do laço for:\n${loopFor}
+      \n
+      Resultado do laço while:\n${loopWhile}
+      \n
+      Resultado do laço do...while:\n${loopDoWhile}
+    `; // Colocando o texto formatado na página
+  </script>
+</body>
+</html>
