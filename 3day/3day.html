@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo do Labirinto</title>
+  <style>
+    /* Estilos para o layout geral da página */
+    body {
+      font-family: Arial, sans-serif;  /* Definindo a fonte */
+      text-align: center;  /* Alinhando o conteúdo no centro */
+      padding: 20px;  /* Espaçamento nas laterais */
+      background-color: #f4f4f9;  /* Cor de fundo */
+    }
+
+    h1 {
+      color: #333;  /* Cor do título */
+    }
+
+    /* Contêiner do labirinto */
+    .game-container {
+      display: inline-block;  /* O jogo ficará em linha com o restante do conteúdo */
+      position: relative;  /* Para colocar o SVG em um contêiner */
+    }
+
+    /* Estilo do SVG (labirinto) */
+    svg {
+      background-color: #e0e0e0;  /* Cor de fundo do SVG */
+      border: 2px solid #333;  /* Borda para destacar o labirinto */
+      margin-top: 20px;  /* Espaçamento superior */
+    }
+
+    /* Estilo do jogador (personagem) */
+    #player {
+      fill: red;  /* A cor do jogador é vermelha */
+    }
+
+    /* Estilo para os botões de controle */
+    .controls {
+      margin-top: 20px;  /* Espaçamento superior */
+    }
+
+    button {
+      padding: 10px;  /* Espaçamento interno */
+      font-size: 1.2em;  /* Tamanho da fonte */
+      margin: 5px;  /* Margem entre os botões */
+    }
+  </style>
+</head>
+<body>
+  <h1>Jogo do Labirinto</h1>
+  <p>Use as setas ou os botões para mover o jogador até a saída!</p>
+
+  <!-- Contêiner do Labirinto -->
+  <div class="game-container">
+    <!-- Labirinto desenhado com SVG -->
+    <svg width="300" height="300" viewBox="0 0 300 300">
+      <!-- Paredes do labirinto -->
+      <rect x="0" y="0" width="300" height="300" fill="none" stroke="black" stroke-width="2"/>  <!-- Borda externa -->
+      <!-- Paredes internas -->
+      <rect x="50" y="0" width="10" height="100" fill="black" />
+      <rect x="50" y="150" width="10" height="100" fill="black" />
+      <rect x="0" y="100" width="100" height="10" fill="black" />
+      <rect x="150" y="50" width="10" height="100" fill="black" />
+      <rect x="200" y="150" width="100" height="10" fill="black" />
+      <rect x="150" y="200" width="10" height="100" fill="black" />
+      <rect x="50" y="200" width="10" height="50" fill="black" />
+      
+      <!-- Saída do Labirinto -->
+      <rect x="290" y="290" width="10" height="10" fill="green" id="exit"/>
+
+      <!-- Jogador -->
+      <circle cx="20" cy="20" r="10" id="player"/>  <!-- O jogador começa no canto superior esquerdo -->
+    </svg>
+  </div>
+
+  <!-- Controles de movimento -->
+  <div class="controls">
+    <button onclick="movePlayer('up')">Cima</button>
+    <button onclick="movePlayer('down')">Baixo</button>
+    <button onclick="movePlayer('left')">Esquerda</button>
+    <button onclick="movePlayer('right')">Direita</button>
+  </div>
+
+  <script>
+    // Posições iniciais do jogador
+    let playerX = 20;  // Posição inicial do jogador no eixo X
+    let playerY = 20;  // Posição inicial do jogador no eixo Y
+
+    // Elemento do jogador no SVG
+    const player = document.getElementById('player');  // Seleciona o jogador (círculo vermelho)
+
+    // Função para mover o jogador
+    function movePlayer(direction) {
+      // Obter o tamanho do labirinto
+      const mazeWidth = 300;  // Largura do labirinto (300px)
+      const mazeHeight = 300;  // Altura do labirinto (300px)
+
+      // Movimentos possíveis com base na direção
+      switch (direction) {
+        case 'up':
+          if (playerY > 0) playerY -= 10;  // Mover para cima (não ultrapassar o limite superior)
+          break;
+        case 'down':
+          if (playerY < mazeHeight - 10) playerY += 10;  // Mover para baixo (não ultrapassar o limite inferior)
+          break;
+        case 'left':
+          if (playerX > 0) playerX -= 10;  // Mover para a esquerda (não ultrapassar o limite esquerdo)
+          break;
+        case 'right':
+          if (playerX < mazeWidth - 10) playerX += 10;  // Mover para a direita (não ultrapassar o limite direito)
+          break;
+      }
+
+      // Atualizar a posição do jogador no SVG
+      player.setAttribute('cx', playerX);  // Atualiza a posição X do jogador
+      player.setAttribute('cy', playerY);  // Atualiza a posição Y do jogador
+
+      // Verificar se o jogador chegou à saída
+      checkExit();
+    }
+
+    // Função para verificar se o jogador chegou à saída
+    function checkExit() {
+      const exitX = 290;  // Posição X da saída
+      const exitY = 290;  // Posição Y da saída
+
+      // Verifica se o jogador está na posição da saída
+      if (playerX >= exitX && playerY >= exitY) {
+        alert("Parabéns! Você encontrou a saída!");  // Exibe uma mensagem de sucesso
+      }
+    }
+  </script>
+</body>
+</html>
