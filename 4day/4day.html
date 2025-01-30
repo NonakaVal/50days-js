@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo das Frutas - Funções e Arrays</title>
+    <style>
+        /* Estilo para os círculos (frutas), adicionando uma transição ao passar o mouse */
+        .fruit {
+            cursor: pointer; /* Faz com que o cursor se transforme em uma mão ao passar sobre a fruta */
+            transition: transform 0.2s; /* Animação suave quando a fruta é expandida */
+        }
+
+        /* Efeito de aumentar a fruta quando o mouse passa sobre ela */
+        .fruit:hover {
+            transform: scale(1.2); /* Aumenta o tamanho da fruta */
+        }
+
+        /* Estilos do SVG, definindo a largura e altura */
+        svg {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #000; /* Adiciona uma borda ao redor do SVG */
+        }
+
+        /* Estilo para o container onde as frutas serão desenhadas */
+        #gameArea {
+            display: flex; /* Utiliza flexbox para alinhar as frutas na horizontal */
+            flex-direction: row;
+            gap: 10px; /* Espaçamento entre as frutas */
+            justify-content: center; /* Alinha as frutas no centro */
+        }
+
+        /* Estilo para os botões */
+        button {
+            margin: 10px;
+            padding: 10px;
+            background-color: #6c757d; /* Cor de fundo cinza */
+            color: white; /* Cor do texto branco */
+            border: none;
+            cursor: pointer; /* Cursor de mão para indicar interação */
+        }
+
+        /* Efeito para os botões quando o mouse passa sobre eles */
+        button:hover {
+            background-color: #5a6268; /* Cor de fundo mais escura quando o mouse passa sobre o botão */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Título do jogo -->
+    <h1>Jogo das Frutas - Funções e Arrays</h1>
+    <div id="gameArea">
+        <!-- Área onde as frutas serão desenhadas -->
+        <svg id="fruitsContainer"></svg>
+    </div>
+
+    <!-- Botões para interação com o jogo -->
+    <div>
+        <!-- Botão para adicionar uma nova fruta -->
+        <button onclick="addFruit()">Adicionar Fruta</button>
+        <!-- Botão para remover a última fruta -->
+        <button onclick="removeFruit()">Remover Fruta</button>
+        <!-- Botão para mover a fruta do início para o final do array -->
+        <button onclick="shiftFruit()">Mover Fruta para o Início</button>
+    </div>
+
+    <script>
+        // Array para armazenar as frutas do jogo
+        let frutas = [];
+
+        // Função para adicionar uma nova fruta ao array
+        function addFruit() {
+            // Chama a função createFruit() para gerar uma fruta aleatória e adiciona ao array
+            let fruit = createFruit();
+            frutas.push(fruit); // Adiciona a fruta ao final do array
+            renderFruits(); // Re-renderiza as frutas na tela
+        }
+
+        // Função para remover a última fruta do array
+        function removeFruit() {
+            frutas.pop(); // Remove a última fruta do array
+            renderFruits(); // Re-renderiza as frutas na tela
+        }
+
+        // Função para mover a primeira fruta para o final do array
+        function shiftFruit() {
+            // Remove a primeira fruta do array e a coloca no final
+            let shiftedFruit = frutas.shift(); // Remove o primeiro elemento
+            frutas.push(shiftedFruit); // Adiciona a fruta removida ao final do array
+            renderFruits(); // Re-renderiza as frutas na tela
+        }
+
+        // Função para criar uma fruta aleatória
+        function createFruit() {
+            // Escolhe uma fruta aleatoriamente entre maçã, banana e laranja
+            const fruitType = ['apple', 'banana', 'orange'][Math.floor(Math.random() * 3)];
+            return fruitType; // Retorna o tipo de fruta escolhido
+        }
+
+        // Função para renderizar as frutas no SVG
+        function renderFruits() {
+            // Seleciona o container onde as frutas serão desenhadas
+            const container = document.getElementById("fruitsContainer");
+            container.innerHTML = ""; // Limpa o conteúdo atual do container
+
+            // Itera sobre o array de frutas e desenha cada uma no SVG
+            frutas.forEach((fruit, index) => {
+                // Define a cor da fruta com base no seu tipo
+                let color;
+                switch (fruit) {
+                    case 'apple': color = 'red'; break; // Maçã será vermelha
+                    case 'banana': color = 'yellow'; break; // Banana será amarela
+                    case 'orange': color = 'orange'; break; // Laranja será laranja
+                }
+
+                // Cria o elemento SVG <circle> para representar a fruta
+                const svgFruit = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                svgFruit.setAttribute("cx", (index + 1) * 100); // Define a posição horizontal (espalha as frutas)
+                svgFruit.setAttribute("cy", 200); // Define a posição vertical (todas as frutas na mesma linha)
+                svgFruit.setAttribute("r", 40); // Define o raio da fruta (tamanho)
+                svgFruit.setAttribute("fill", color); // Define a cor da fruta
+                svgFruit.setAttribute("class", "fruit"); // Adiciona a classe CSS para interações
+                svgFruit.addEventListener("click", () => alert(`Você clicou em uma fruta ${fruit}`)); // Alerta ao clicar na fruta
+                
+                // Adiciona a fruta desenhada no container do SVG
+                container.appendChild(svgFruit);
+            });
+        }
+
+        // Inicia o jogo adicionando 3 frutas inicialmente
+        addFruit();
+        addFruit();
+        addFruit();
+    </script>
+</body>
+</html>
